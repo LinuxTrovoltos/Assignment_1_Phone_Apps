@@ -63,4 +63,54 @@ class MainActivity : AppCompatActivity() {
 
         initializeButtons()
     }
+
+    private fun checkForAWin(): Boolean {
+        // Horizontal check
+        for (row in buttons) {
+            if (row[0].text == row[1].text && row[1].text == row[2].text && row[0].text.isNotEmpty()) {
+                return true
+            }
+        }
+
+        // Vertical check
+        for (i in 0..2) {
+            if (buttons[0][i].text == buttons[1][i].text && buttons[1][i].text == buttons[2][i].text && buttons[0][i].text.isNotEmpty()) {
+                return true
+            }
+        }
+
+        // Diagonal check
+        if (buttons[0][0].text == buttons[1][1].text && buttons[1][1].text == buttons[2][2].text && buttons[0][0].text.isNotEmpty()) {
+            return true
+        }
+        if (buttons[0][2].text == buttons[1][1].text && buttons[1][1].text == buttons[2][0].text && buttons[0][2].text.isNotEmpty()) {
+            return true
+        }
+
+        return false
+    }
+
+    private fun checkTie(): Boolean {
+        for (row in buttons) {
+            for (button in row) {
+                if (button.text.isEmpty()) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    private fun showWinnerDialog(message: String) {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        builder.setTitle("Game Over")
+        builder.setMessage(message)
+
+        builder.setPositiveButton("OK") { _, _ ->
+            resetBoard()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
 }
